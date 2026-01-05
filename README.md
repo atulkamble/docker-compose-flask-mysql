@@ -32,9 +32,7 @@
 <strong>Version 1.0.0</strong> | <strong>Last Updated:</strong> January 2026
 </div>
 
-### **Use Case**
-
-A **Python Flask web application** connected to **MySQL**, managed using **Docker Compose**.
+### **Use Case** A **Python Flask web application** connected to **MySQL**, managed using **Docker Compose**.
 
 ---
 
