@@ -31,9 +31,6 @@
 
 <strong>Version 1.0.0</strong> | <strong>Last Updated:</strong> January 2026
 </div>
-Below is a **complete, production-ready Docker Compose project** you can directly use for **training, demos, or real workloads**.
-I’ve kept it **simple + extensible**, so you can easily teach this or expand it later.
-
 ---
 
 ### **Use Case**
