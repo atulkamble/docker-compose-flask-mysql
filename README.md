@@ -38,20 +38,61 @@
 
 ## 🏗️ Architecture Overview
 
-![Image](https://docs.docker.com/compose/images/compose-application.webp)
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        USER BROWSER                         │
+│                    http://localhost:5000                    │
+└────────────────────────────┬────────────────────────────────┘
+                             │
+                             │ HTTP Request
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    DOCKER NETWORK                           │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │        FLASK WEB APP CONTAINER (flask_app)            │  │
+│  │                    Port: 5000                         │  │
+│  ├───────────────────────────────────────────────────────┤  │
+│  │  • Flask Web Server (Python 3.11)                    │  │
+│  │  • Route: / → index() → Display entries + form      │  │
+│  │  • Route: /add → add_entry() → Insert to MySQL      │  │
+│  │  • HTML Template: index.html (Jinja2)               │  │
+│  │  • Auto-initialize MySQL table on startup           │  │
+│  └───────────────────────┬───────────────────────────────┘  │
+│                          │                                   │
+│                          │ MySQL Connection                  │
+│                          │ (host: db, port: 3306)           │
+│                          ▼                                   │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │       MYSQL DATABASE CONTAINER (mysql_db)             │  │
+│  │                    Port: 3306                         │  │
+│  ├───────────────────────────────────────────────────────┤  │
+│  │  • MySQL 8.0 Server                                  │  │
+│  │  • Database: flaskdb                                 │  │
+│  │  • Table: entries (id, title, description,          │  │
+│  │           created_at)                                │  │
+│  │  • Volume: mysql_data (persistent storage)          │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
 
-![Image](https://cdn.hashnode.com/res/hashnode/image/upload/v1610136098758/vey2tFCDx.png)
+### **Data Flow**
 
-![Image](https://media.geeksforgeeks.org/wp-content/uploads/20240715174859/Microservices-with-Docker-Containers.webp)
+1. 🌐 **User** opens browser → `http://localhost:5000`
+2. 🐍 **Flask App** renders `index.html` with existing entries from MySQL
+3. 📝 **User** fills form (title + description) → clicks "Add Entry"
+4. ⚡ **Flask** receives POST request → validates data
+5. 💾 **MySQL** stores entry in `entries` table
+6. 🔄 **Flask** redirects to home page with updated entry list
+7. ✨ **User** sees new entry displayed on the page
 
-![Image](https://docs.docker.com/get-started/docker-concepts/running-containers/images/multi-container-apps.webp)
+### **Components**
 
-**Components**
-
-* 🐍 Flask Web App
-* 🗄️ MySQL Database
-* 🔗 Docker network (auto-created)
-* 📦 Volumes for persistent data
+* 🐍 **Flask Web App** - Python web server with HTML templates
+* 🗄️ **MySQL Database** - Persistent data storage
+* 🔗 **Docker Network** - Internal communication (auto-created)
+* 📦 **Volumes** - MySQL data persistence (`mysql_data`)
+* 🎨 **HTML/CSS UI** - Modern responsive interface
 
 ---
 
