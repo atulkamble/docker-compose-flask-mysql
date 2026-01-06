@@ -103,6 +103,17 @@
 
 ---
 
+# troubleshooting 
+
+```
+CREATE TABLE entries (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
 ## 📁 Project Structure
 
 ```bash
